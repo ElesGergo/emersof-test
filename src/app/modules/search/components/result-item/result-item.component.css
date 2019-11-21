@@ -1,0 +1,11 @@
+:host {
+    width: 100px;
+}
+
+a {
+    text-align: center;
+    width: 80px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

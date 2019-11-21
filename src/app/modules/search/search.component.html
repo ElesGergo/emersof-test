@@ -1,0 +1,61 @@
+<div class="row search-header">
+  <div class="col-sm-1">
+    <img style="height:38px" src="assets/images/icons/cloud.svg" alt="logo" />
+  </div>
+
+  <div class=" col-sm-3 ">
+    <app-search-input (search)="onSearchTerm($event)"></app-search-input>
+  </div>
+  <div class="   col-sm-4 ">
+    <app-search-drop-down
+      [title]="'Filter by'"
+      [dropItems]="mediaTypes"
+      (selected)="onOptionSelected($event, 'filter')"
+    ></app-search-drop-down>
+  </div>
+
+  <div class=" col-sm-4   text-right">
+    <button class="btn btn-primary mr-2  ">
+      <!-- Can be better -->
+      <img
+        *ngIf="searchObject.sortType === 'dsc'"
+        class="sort-by-image "
+        src="assets/images/asc.png"
+        alt="sorting"
+        (click)="changeSort('asc')"
+      />
+      <img
+        *ngIf="searchObject.sortType === 'asc'"
+        class="sort-by-image "
+        src="assets/images/dsc.png"
+        alt="sorting"
+        (click)="changeSort('dsc')"
+      />
+    </button>
+    <button (click)="clearFilter()" class="btn btn-danger">Clear all</button>
+  </div>
+</div>
+
+<div class="container">
+  <div
+    class="d-flex flex-wrap"
+    *ngIf="data$ | async as mediaItems; else loading"
+  >
+    <ng-container *ngIf="mediaItems.length !== 0; else noItems">
+      <app-result-item
+        *ngFor="let item of mediaItems"
+        [mediaItem]="item"
+      ></app-result-item>
+    </ng-container>
+    <ng-template #noItems>
+      <div class="d-flex flex-column align-items-center w-100 mt-3">
+        <img style="width:600px" src="assets/images/notfound.png" alt=":)" />
+        <p class="text-center">Thanks for checking my work in detail! :)</p>
+        <p class="text-center">No items found!</p>
+      </div>
+    </ng-template>
+  </div>
+  <ng-template #loading>
+    <div class="lds-dual-ring d-flex justify-content-center"></div>
+  </ng-template>
+</div>

@@ -1,0 +1,14 @@
+<div ngbDropdown class="d-inline-block h-100">
+  <button class="btn btn-primary" id="dropdownRef" ngbDropdownToggle>
+    {{ title }} {{ !selectedState ? dropItems[0].title : selectedState }}
+  </button>
+  <div ngbDropdownMenu aria-labelledby="dropdownRef">
+    <button
+      (click)="select(dropItem.value)"
+      ngbDropdownItem
+      *ngFor="let dropItem of dropItems"
+    >
+      {{ dropItem.title }}
+    </button>
+  </div>
+</div>
