@@ -4,7 +4,14 @@
   </div>
 
   <div class=" col-sm-3 ">
-    <app-search-input (search)="onSearchTerm($event)"></app-search-input>
+    <div class="input-group">
+      <input
+        type="text"
+        class=" form-control"
+        placeholder="Search"
+        [formControl]="searchControl"
+      />
+    </div>
   </div>
   <div class="   col-sm-4 ">
     <app-search-drop-down
@@ -17,14 +24,14 @@
   <div class=" col-sm-4   text-right">
     <!-- Can be done better -->
     <button
-      *ngIf="searchObject.sortType === 'dsc'"
+      *ngIf="(sortType$ | async) === 'dsc'"
       class="btn btn-primary mr-2  "
       (click)="changeSort('asc')"
     >
       <img class="sort-by-image " src="assets/images/asc.png" alt="sorting" />
     </button>
     <button
-      *ngIf="searchObject.sortType === 'asc'"
+      *ngIf="(sortType$ | async) === 'asc'"
       class="btn btn-primary mr-2  "
       (click)="changeSort('dsc')"
     >
@@ -35,25 +42,20 @@
 </div>
 
 <div class="container">
-  <div
-    class="d-flex flex-wrap"
-    *ngIf="data$ | async as mediaItems; else loading"
-  >
+  <div class="d-flex flex-wrap" *ngIf="data$ | async as mediaItems">
     <ng-container *ngIf="mediaItems.length !== 0; else noItems">
       <app-result-item
         *ngFor="let item of mediaItems"
         [mediaItem]="item"
       ></app-result-item>
     </ng-container>
+
     <ng-template #noItems>
       <div class="d-flex flex-column align-items-center w-100 mt-3">
-        <img style="width:600px" src="assets/images/notfound.png" alt=":)" />
-        <p class="text-center">Thanks for checking my work in detail! :)</p>
+        <!--         <img style="width:600px" src="assets/images/notfound.png" alt=":)" />
+        <p class="text-center">Thanks for checking my work in detail! :)</p> -->
         <p class="text-center">No items found!</p>
       </div>
     </ng-template>
   </div>
-  <ng-template #loading>
-    <div class="lds-dual-ring d-flex justify-content-center"></div>
-  </ng-template>
 </div>

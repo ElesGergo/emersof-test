@@ -1,5 +1,6 @@
 export interface SearchObject {
   searchTerm: string;
   filter?: string;
-  sortType?: "asc" | "dsc";
+  sortType?: SortType;
 }
+export type SortType = "asc" | "dsc";

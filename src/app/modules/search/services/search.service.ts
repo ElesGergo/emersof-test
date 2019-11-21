@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, from } from "rxjs";
 import { TestData } from "../models/TesData";
-import { SearchObject } from "../models/serachObject";
+import { SearchObject } from "../models/SerachObject";
 import { map, filter, switchMap, toArray } from "rxjs/operators";
 
 @Injectable({
@@ -14,6 +14,7 @@ export class SearchService {
   getTest(searchObject: SearchObject): Observable<TestData[]> {
     return this._http.get<TestData[]>("api/heroes").pipe(
       switchMap(result => from(result)),
+      //title search mock
       filter((item: TestData) => {
         let sTerm = searchObject.searchTerm.toLowerCase();
         let equalLengtht = item.title
@@ -27,13 +28,15 @@ export class SearchService {
         }
         return false;
       }),
+      //type filter mock
       filter((item: TestData) => {
-        if (!searchObject.filter) {
+        if (searchObject.filter === "all") {
           return true;
         }
         return item.type === searchObject.filter ? true : false;
       }),
       toArray(),
+      //sorting mock
       map(res => {
         sortResult(res, searchObject.sortType);
         return res;

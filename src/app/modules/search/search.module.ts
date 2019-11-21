@@ -7,7 +7,6 @@ import { HttpClientModule } from "@angular/common/http";
 import { ResultModalComponent } from "./components/result-modal/result-modal.component";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { SearchDropDownComponent } from "./components/search-drop-down/search-drop-down.component";
-import { SearchInputComponent } from "./components/search-input/search-input.component";
 import { ResultItemComponent } from "./components/result-item/result-item.component";
 
 const searchRoutes: Routes = [
@@ -30,7 +29,6 @@ const searchRoutes: Routes = [
     SearchComponent,
     ResultModalComponent,
     SearchDropDownComponent,
-    SearchInputComponent,
     ResultItemComponent
   ],
   entryComponents: [ResultModalComponent]

@@ -8,7 +8,7 @@ import { DomSanitizer } from "@angular/platform-browser";
   templateUrl: "./result-modal.component.html",
   styleUrls: ["./result-modal.component.css"]
 })
-export class ResultModalComponent implements OnInit {
+export class ResultModalComponent {
   data: TestData;
   constructor(
     public activeModal: NgbActiveModal,
@@ -16,9 +16,5 @@ export class ResultModalComponent implements OnInit {
   ) {}
   get imageRoute(): string {
     return `/assets/images/icons/${this.data.type}.png`;
-  }
-  ngOnInit() {}
-  docLoaded(e) {
-    console.log(e);
   }
 }

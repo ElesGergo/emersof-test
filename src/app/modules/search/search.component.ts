@@ -1,9 +1,12 @@
 import { Component, OnInit } from "@angular/core";
-import { SearchService } from "./services/search.service";
 import { Observable } from "rxjs";
 import { DropDownInput } from "./models/DropDownInput";
 import { mediaTypes } from "./util/searchOptions";
-import { SearchObject } from "./models/serachObject";
+import { SearchFacade } from "./services/search-facade.service";
+import { map, take, tap, delay } from "rxjs/operators";
+import { FormControl } from "@angular/forms";
+import { SortType } from "./models/SerachObject";
+import { TestData } from "./models/TesData";
 @Component({
   selector: "app-search",
   templateUrl: "./search.component.html",
@@ -11,50 +14,36 @@ import { SearchObject } from "./models/serachObject";
 })
 export class SearchComponent implements OnInit {
   mediaTypes: Array<DropDownInput> = mediaTypes;
-  data$: Observable<any>;
+  searchControl: FormControl = new FormControl("");
 
-  searchObject: SearchObject = {
-    searchTerm: "",
-    filter: null,
-    sortType: "asc"
-  };
-
-  constructor(private searchService: SearchService) {}
+  data$: Observable<TestData[]>;
+  sortType$: Observable<SortType>;
+  constructor(private facade: SearchFacade) {
+    this.facade.updateSearchTerm(this.searchControl.valueChanges);
+  }
   ngOnInit(): void {
-    this.triggerSearch();
+    this.initSearchInput();
+    this.data$ = this.facade.mediaItems$;
+    this.sortType$ = this.facade.sortType$;
   }
-  triggerSearch(): void {
-    this.data$ = this.searchService.getTest(this.searchObject);
+  onOptionSelected(event: string): void {
+    this.facade.updateCriteria({ filter: event, sortType: null });
   }
-  onSearchTerm(sTerm: string): void {
-    this.searchObject = Object.assign(this.searchObject, { searchTerm: sTerm });
-    this.triggerSearch();
-  }
-  onOptionSelected(event: string, type: string): void {
-    let searchOption;
-    if (type === "filter") {
-      searchOption = {
-        filter: event
-      };
-    }
-    if (type === "sortType") {
-      searchOption = {
-        sortType: event
-      };
-    }
-    this.searchObject = Object.assign(this.searchObject, searchOption);
-    this.triggerSearch();
-  }
-  changeSort(st: string): void {
-    this.searchObject = Object.assign(this.searchObject, { sortType: st });
-    this.triggerSearch();
+  changeSort(st: SortType): void {
+    this.facade.updateCriteria({ sortType: st, filter: null });
   }
   clearFilter(): void {
-    this.searchObject = Object.assign({
-      searchTerm: "",
-      filter: null,
-      sortType: "asc"
+    this.searchControl.reset("");
+    this.facade.clearFilter();
+  }
+
+  initSearchInput(): void {
+    const initialTerm$ = this.facade.searchCriteria$.pipe(
+      map(c => c.searchTerm),
+      take(1)
+    );
+    initialTerm$.subscribe(criteria => {
+      this.searchControl.patchValue(criteria, { emitEvent: false });
     });
-    this.triggerSearch();
   }
 }

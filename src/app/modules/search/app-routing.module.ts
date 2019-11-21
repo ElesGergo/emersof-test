@@ -5,8 +5,7 @@ const routes: Routes = [
   { path: "", redirectTo: "v1", pathMatch: "full" },
   {
     path: "v1",
-    loadChildren: () =>
-      import("./modules/search/search.module").then(m => m.SearchModule)
+    loadChildren: () => import("./search.module").then(m => m.SearchModule)
   }
 ];
 
