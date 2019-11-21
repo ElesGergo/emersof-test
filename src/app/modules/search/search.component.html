@@ -15,22 +15,20 @@
   </div>
 
   <div class=" col-sm-4   text-right">
-    <button class="btn btn-primary mr-2  ">
-      <!-- Can be better -->
-      <img
-        *ngIf="searchObject.sortType === 'dsc'"
-        class="sort-by-image "
-        src="assets/images/asc.png"
-        alt="sorting"
-        (click)="changeSort('asc')"
-      />
-      <img
-        *ngIf="searchObject.sortType === 'asc'"
-        class="sort-by-image "
-        src="assets/images/dsc.png"
-        alt="sorting"
-        (click)="changeSort('dsc')"
-      />
+    <!-- Can be done better -->
+    <button
+      *ngIf="searchObject.sortType === 'dsc'"
+      class="btn btn-primary mr-2  "
+      (click)="changeSort('asc')"
+    >
+      <img class="sort-by-image " src="assets/images/asc.png" alt="sorting" />
+    </button>
+    <button
+      *ngIf="searchObject.sortType === 'asc'"
+      class="btn btn-primary mr-2  "
+      (click)="changeSort('dsc')"
+    >
+      <img class="sort-by-image " src="assets/images/dsc.png" alt="sorting" />
     </button>
     <button (click)="clearFilter()" class="btn btn-danger">Clear all</button>
   </div>
